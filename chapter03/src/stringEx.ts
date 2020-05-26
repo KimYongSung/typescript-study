@@ -1,4 +1,4 @@
-function stringEx(){    
+function stringEx(){
     let a = 'hello'         // string
     var b = 'billy'         // string
     const c = '!'           // '!'

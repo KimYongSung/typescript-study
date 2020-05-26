@@ -86,7 +86,7 @@ const b = 5678n         // 5678n
 var c = a + b           // bigint
 let d = a < 1235        // boolean
 let e = 88.5n           // 에러 
-let f: bigint = 100n    // bigint    
+let f: bigint = 100n    // bigint
 let g: 100n = 100n      // 100n
 let h: bigint = 100     // 에러 
 ```
@@ -105,6 +105,7 @@ let e: string = 'zoom'  // string
 let f: 'john' = 'john'  // 'john'
 let g: 'john' = 'zoe'   // 에러
 ```
+
 ### symbol
 
 * ES2015에 새로 추가된 기능.
@@ -136,3 +137,61 @@ let i = e === f // 에러
 > * 객체의 이름에 상관없이 어떤 프로퍼티를 갖고 있는지를 따진다.
 > * 일부 언어에서는 덕 타이핑이라고 한다.
 
+```typescript
+let c: {
+    firstName: string
+    lastName: string
+} = {
+    firstName: 'john',
+    lastName: 'barrowman'
+}
+
+class Person{
+    constructor(
+        public firstName: string,
+        public lastName: string
+    ){}
+}
+
+c = new Person('matt','smith') // 구조 기반 타입화로 {} 객체와 class 모두 c에 참조 가능하다
+```
+
+```typescript
+let a: { b: number }
+
+a = {} // 에러 : b가 선언되지 않은 객체
+
+a = { 
+    b: 1,
+    c: 2 // 에러 : c 가 추가된 객체
+}
+
+```
+
+* 변수를 선언 후 값을 할당하도록 강제한다.
+
+```typescript
+let i: number
+let j = i * 3 // 에러
+
+let x
+let j = x * 3 // 에러
+```
+
+* 객체 프로퍼티의 선언은 여러가지 방법으로 가능하다.
+
+```typescript
+let a: {
+    b: number // a는 number 타입의 b 프로퍼티를 포함
+    c?: string // a는 striing 타입의 c 프로퍼티를 포함할 수 있다
+    [key: number] : boolean // a는 boolean 타입의 값을 갖는 number 타입의 프로퍼티를 여러 개 포함할 수 있다
+}
+
+a = {b: 1}
+a = {b: 1, c: undefined}
+a = {b: 1, c: 'd'}
+a = {b: 1, 10: true}
+a = {b: 1, 10: true, 20: false}
+a = {10: true} // 에러
+a = {b: 1, 33: 'red'} // 에러
+```
