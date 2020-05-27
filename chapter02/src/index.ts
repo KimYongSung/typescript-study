@@ -1,16 +1,20 @@
 
-function recursive(){
-    console.log('Hello TypeScript!')
+const 챕터2_예제 = () => {
 
-    let a = 1+2
-    let b = a + 3
-    let c = {
-        apple: a,
-        banana: b
+    function recursive(){
+        console.log('Hello TypeScript!')
+    
+        let a = 1+2
+        let b = a + 3
+        let c = {
+            apple: a,
+            banana: b
+        }
+        let d = c.apple * 4
+    
+        recursive();
     }
-    let d = c.apple * 4
-
+    
     recursive();
-}
 
-recursive();
+}

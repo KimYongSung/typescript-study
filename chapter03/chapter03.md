@@ -195,3 +195,149 @@ a = {b: 1, 10: true, 20: false}
 a = {10: true} // 에러
 a = {b: 1, 33: 'red'} // 에러
 ```
+
+### 타입 별칭
+
+* 복잡한 타입을 반복하지 않게 해준다.
+* 변수가 어떤 목적으로 사용되었는지 쉽게 이해할 수 있게 도와준다.
+* 별칭을 추론하지 않으므로 반드시 별칭의 타입을 정의해야한다.
+
+```typescript
+
+type Age = number
+
+type Person = {
+    name: string
+    age: Age
+}
+
+let age: Age = 55
+let driver: Person = {
+    name: 'James May',
+    age: age
+}
+
+```
+
+* 하나의 타입을 두번 정의 할 수 없다.
+
+```typescript
+type Color = 'red'
+type Color = 'blud' // 에러
+```
+
+* let과 const 처럼 블록 영역에 적용된다.
+  * 모든 블럭과 함수는 자신만의 영역을 가지므로 내부에 정의한 타입 별칭이 외부의 정의를 덮어쓴다.
+
+```typescript
+type Color = 'red'
+
+let x = Math.random() < .5
+
+if(x) {
+    type Color = 'blue' // 타입을 덮어씀
+    let b: Color = 'blue'
+}else {
+    let c: Color = 'red'
+}
+```
+
+### 유니온과 인터센셕 타입
+
+* A,B 라는 두 사물이 있을 때 이를 유니온(합집합)하면 둘을 합친 결과가 나오며 인터센셕(교집합) 하면 둘의 공통부분이 결과로 나온다.
+* 타입은 집합과 비슷하므로 집합처럼 연산을 수행할 수 있는 유니온(|)과 인터섹션(&)을 제공한다. 
+
+```typescript
+type Cat = {name: string, purrs: boolean}
+type Dog = {name: string, barks: boolean, wags: boolean}
+type CatOrDogOrBoth = Cat | Dog
+type CatAndDog = Cat & Dog
+
+// Cat
+let a: CatOrDogOrBoth = {
+    name: 'Bonkers',
+    purrs: true
+}
+
+// Dog
+a = {
+    name: 'Domino',
+    barks: true,
+    wags: true
+}
+
+// 둘다
+a = {
+    name: 'Donkers',
+    barks: true,
+    purrs: true,
+    wags: true
+}
+
+// 인터섹션
+let a: CatAndDog = {
+        name: 'Donkers',
+        barks: true,
+        purrs: true,
+        wags: true
+    }
+```
+
+* 실전에서는 유니온을 자주 사용한다.
+
+```typescript
+const trueOrNull = (isTrue:boolean) : Returns => {
+    if(isTrue){
+        return 'true'
+    }
+    return null
+}
+
+const stringOrNumber = (a: string | null, b: number) => {
+    return a || b
+}
+
+console.log(stringOrNumber('str', 0)) // str
+console.log(stringOrNumber(null, 0)) // 0
+```
+
+### 배열
+
+* 자바스크립트처럼 연결, 푸시, 검색, 슬라이스 등을 지원하는 특별한 객체다.
+
+```typescript
+let a = [1, 2, 3]        // number[]
+let b = ['a','b']        // string[]
+let c: string[] = ['a']  // string[]
+let d = [1, 'a']         // (string | number)[]
+const e = [2, 'b']       // (string | number)[]
+
+let f = ['red']
+f.push('blue')
+f.push(true) // 에러
+
+let g = []      // any[]
+g.push(1)
+g.push('red')
+
+let h: number[] = []
+h.push(1)
+h.push('red') // 에러
+```
+* **배열은 동일한 타입으로 정의 후 사용**하자.
+  * `동일한 타입이 아닐 경우 매번 검증 후 사용`해야 한다.
+
+```typescript
+let d = [1, 'a']
+d.map(element => {
+    if(typeof element === 'number'){ // 타입 검증
+        return element * 3
+    }
+    return element.toUpperCase()
+})
+```
+
+### 튜플
+
+
+
